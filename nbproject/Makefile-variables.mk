@@ -9,19 +9,19 @@ CND_DISTDIR=dist
 # Debug configuration
 CND_PLATFORM_Debug=GNU-Linux-x86
 CND_ARTIFACT_DIR_Debug=dist/Debug/GNU-Linux-x86
-CND_ARTIFACT_NAME_Debug=fftl
-CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/fftl
+CND_ARTIFACT_NAME_Debug=fft-lite
+CND_ARTIFACT_PATH_Debug=dist/Debug/GNU-Linux-x86/fft-lite
 CND_PACKAGE_DIR_Debug=dist/Debug/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Debug=fftl.tar
-CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/fftl.tar
+CND_PACKAGE_NAME_Debug=fft-lite.tar
+CND_PACKAGE_PATH_Debug=dist/Debug/GNU-Linux-x86/package/fft-lite.tar
 # Release configuration
 CND_PLATFORM_Release=GNU-Linux-x86
 CND_ARTIFACT_DIR_Release=dist/Release/GNU-Linux-x86
-CND_ARTIFACT_NAME_Release=fftl
-CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/fftl
+CND_ARTIFACT_NAME_Release=fft-lite
+CND_ARTIFACT_PATH_Release=dist/Release/GNU-Linux-x86/fft-lite
 CND_PACKAGE_DIR_Release=dist/Release/GNU-Linux-x86/package
-CND_PACKAGE_NAME_Release=fftl.tar
-CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/fftl.tar
+CND_PACKAGE_NAME_Release=fft-lite.tar
+CND_PACKAGE_PATH_Release=dist/Release/GNU-Linux-x86/package/fft-lite.tar
 #
 # include compiler specific variables
 #

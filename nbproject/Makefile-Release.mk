@@ -68,11 +68,11 @@ LDLIBSOPTIONS=
 
 # Build Targets
 .build-conf: ${BUILD_SUBPROJECTS}
-	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fftl
+	"${MAKE}"  -f nbproject/Makefile-${CND_CONF}.mk ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fft-lite
 
-${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fftl: ${OBJECTFILES}
+${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fft-lite: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
-	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fftl ${OBJECTFILES} ${LDLIBSOPTIONS}
+	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fft-lite ${OBJECTFILES} ${LDLIBSOPTIONS}
 
 ${OBJECTDIR}/CChirpZ.o: CChirpZ.cpp 
 	${MKDIR} -p ${OBJECTDIR}
@@ -145,7 +145,7 @@ ${OBJECTDIR}/TestMain.o: TestMain.cpp
 # Clean Targets
 .clean-conf: ${CLEAN_SUBPROJECTS}
 	${RM} -r ${CND_BUILDDIR}/${CND_CONF}
-	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fftl
+	${RM} ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/fft-lite
 
 # Subprojects
 .clean-subprojects:
