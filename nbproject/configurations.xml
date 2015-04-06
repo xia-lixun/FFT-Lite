@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="95">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <logicalFolder name="HeaderFiles"
+                   displayName="Header Files"
+                   projectFiles="true">
+      <itemPath>CChirpZ.h</itemPath>
+      <itemPath>CChirpZd.h</itemPath>
+      <itemPath>CCoef.h</itemPath>
+      <itemPath>CCoef4.h</itemPath>
+      <itemPath>CCoef4d.h</itemPath>
+      <itemPath>CCoefd.h</itemPath>
+      <itemPath>CFastFourier.h</itemPath>
+      <itemPath>CFourier.h</itemPath>
+      <itemPath>CSort.h</itemPath>
+      <itemPath>CSort4.h</itemPath>
+      <itemPath>CTrans.h</itemPath>
+      <itemPath>CTrans4.h</itemPath>
+      <itemPath>Config.h</itemPath>
+      <itemPath>complexvec.h</itemPath>
+      <itemPath>vectorclass.h</itemPath>
+    </logicalFolder>
+    <logicalFolder name="ResourceFiles"
+                   displayName="Resource Files"
+                   projectFiles="true">
+    </logicalFolder>
+    <logicalFolder name="SourceFiles"
+                   displayName="Source Files"
+                   projectFiles="true">
+      <itemPath>CChirpZ.cpp</itemPath>
+      <itemPath>CChirpZd.cpp</itemPath>
+      <itemPath>CCoef.cpp</itemPath>
+      <itemPath>CCoef4.cpp</itemPath>
+      <itemPath>CCoef4d.cpp</itemPath>
+      <itemPath>CCoefd.cpp</itemPath>
+      <itemPath>CFastFourier.cpp</itemPath>
+      <itemPath>CFourier.cpp</itemPath>
+      <itemPath>CSort.cpp</itemPath>
+      <itemPath>CSort4.cpp</itemPath>
+      <itemPath>CTrans.cpp</itemPath>
+      <itemPath>CTrans4.cpp</itemPath>
+      <itemPath>TestMain.cpp</itemPath>
+    </logicalFolder>
+    <logicalFolder name="TestFiles"
+                   displayName="Test Files"
+                   projectFiles="false"
+                   kind="TEST_LOGICAL_FOLDER">
+    </logicalFolder>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <projectmakefile>Makefile</projectmakefile>
+  <confs>
+    <conf name="Debug" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <architecture>2</architecture>
+          <standard>3</standard>
+          <warningLevel>2</warningLevel>
+        </cTool>
+        <ccTool>
+          <architecture>2</architecture>
+          <standard>8</standard>
+          <commandLine>-msse4.1 -O3 -march=native</commandLine>
+          <warningLevel>2</warningLevel>
+        </ccTool>
+        <asmTool>
+          <architecture>2</architecture>
+          <warningLevel>2</warningLevel>
+        </asmTool>
+        <linkerTool>
+          <commandLine>-lfftw3f -lfftw3 -lm -lrt</commandLine>
+        </linkerTool>
+      </compileType>
+      <item path="CChirpZ.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CChirpZ.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CChirpZd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CChirpZd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoef.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoef.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoef4.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoef4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoef4d.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoef4d.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoefd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoefd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFastFourier.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastFourier.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFourier.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFourier.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CSort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CSort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CSort4.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CSort4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTrans.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTrans.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTrans4.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTrans4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TestMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="complexvec.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="vectorclass.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+    <conf name="Release" type="1">
+      <toolsSet>
+        <compilerSet>default</compilerSet>
+        <dependencyChecking>true</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
+      </toolsSet>
+      <compileType>
+        <cTool>
+          <developmentMode>5</developmentMode>
+        </cTool>
+        <ccTool>
+          <developmentMode>5</developmentMode>
+        </ccTool>
+        <fortranCompilerTool>
+          <developmentMode>5</developmentMode>
+        </fortranCompilerTool>
+        <asmTool>
+          <developmentMode>5</developmentMode>
+        </asmTool>
+      </compileType>
+      <item path="CChirpZ.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CChirpZ.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CChirpZd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CChirpZd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoef.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoef.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoef4.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoef4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoef4d.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoef4d.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CCoefd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CCoefd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFastFourier.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastFourier.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFourier.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFourier.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CSort.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CSort.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CSort4.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CSort4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTrans.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTrans.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CTrans4.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CTrans4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Config.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="TestMain.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="complexvec.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="vectorclass.h" ex="false" tool="3" flavor2="0">
+      </item>
+    </conf>
+  </confs>
+</configurationDescriptor>
