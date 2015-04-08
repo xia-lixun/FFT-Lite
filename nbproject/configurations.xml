@@ -12,11 +12,11 @@
       <itemPath>CCoefd.h</itemPath>
       <itemPath>CFastBluestein.h</itemPath>
       <itemPath>CFastFourier.h</itemPath>
-      <itemPath>CFourier.h</itemPath>
       <itemPath>CSort.h</itemPath>
       <itemPath>CSort4.h</itemPath>
       <itemPath>CTrans.h</itemPath>
       <itemPath>CTrans4.h</itemPath>
+      <itemPath>Cdft.h</itemPath>
       <itemPath>Config.h</itemPath>
       <itemPath>complexvec.h</itemPath>
       <itemPath>vectorclass.h</itemPath>
@@ -36,11 +36,11 @@
       <itemPath>CCoefd.cpp</itemPath>
       <itemPath>CFastBluestein.cpp</itemPath>
       <itemPath>CFastFourier.cpp</itemPath>
-      <itemPath>CFourier.cpp</itemPath>
       <itemPath>CSort.cpp</itemPath>
       <itemPath>CSort4.cpp</itemPath>
       <itemPath>CTrans.cpp</itemPath>
       <itemPath>CTrans4.cpp</itemPath>
+      <itemPath>Cdft.cpp</itemPath>
       <itemPath>TestMain.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
@@ -115,10 +115,6 @@
       </item>
       <item path="CFastFourier.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="CFourier.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="CFourier.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="CSort.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CSort.h" ex="false" tool="3" flavor2="0">
@@ -134,6 +130,10 @@
       <item path="CTrans4.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CTrans4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Cdft.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Cdft.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Config.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -196,10 +196,6 @@
       </item>
       <item path="CFastFourier.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="CFourier.cpp" ex="false" tool="1" flavor2="0">
-      </item>
-      <item path="CFourier.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="CSort.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CSort.h" ex="false" tool="3" flavor2="0">
@@ -215,6 +211,10 @@
       <item path="CTrans4.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CTrans4.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="Cdft.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Cdft.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="Config.h" ex="false" tool="3" flavor2="0">
       </item>

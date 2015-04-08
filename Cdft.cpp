@@ -4,16 +4,20 @@
  * 
  * Created on 2015年4月1日, 上午12:14
  */
-
-#include "CFourier.h"
-#include "CFastFourier.h"
 #include "Config.h"
 
+#include "CFastFourier.h"
+#include "CFastBluestein.h"
+
+#include "Cdft.h"
 
 
 
 
-bool CFourier::IsRadix2(int Length) {
+
+
+
+bool Cdft::IsRadix2(int Length) {
     if((Length & (Length-1)) == 0) {
         return true;
     } else {
@@ -25,51 +29,47 @@ bool CFourier::IsRadix2(int Length) {
 
 
 
-
-
-
-
-
-
-
-
-void CFourier::dft_f(int Points, float * In, float * Out) {
+void Cdft::dft_f(int Points, float * In, float * Out) {
     
     if(IsRadix2(Points)) {
         CFastFourier dft;
         dft.fft_f(Points, In, Out);
     } else {
-        //Chirp-Z conversion...
+        CFastBluestein dft;
+        dft.chirpz_f(Points, In, Out);
     }
 }
 
-void CFourier::idft_f(int Points, float * In, float * Out) {
+void Cdft::idft_f(int Points, float * In, float * Out) {
     
     if(IsRadix2(Points)) {
         CFastFourier dft;
         dft.ifft_f(Points, In, Out);
     } else {
-        //Chirp-Z conversion...
+        CFastBluestein dft;
+        dft.ichirpz_f(Points, In, Out);
     }    
 }
 
-void CFourier::dft_d(int Points, double * In, double * Out) {
+void Cdft::dft_d(int Points, double * In, double * Out) {
 
     if(IsRadix2(Points)) {
         CFastFourier dft;
         dft.fft_d(Points, In, Out);
     } else {
-        //Chirp-Z conversion...
+        CFastBluestein dft;
+        dft.chirpz_d(Points, In, Out);
     }    
 }
 
-void CFourier::idft_d(int Points, double * In, double * Out) {
+void Cdft::idft_d(int Points, double * In, double * Out) {
     
     if(IsRadix2(Points)) {
         CFastFourier dft;
         dft.ifft_d(Points, In, Out);
     } else {
-        //Chirp-Z conversion...
+        CFastBluestein dft;
+        dft.ichirpz_d(Points, In, Out);
     }    
 }
 
@@ -77,12 +77,12 @@ void CFourier::idft_d(int Points, double * In, double * Out) {
 
 
 
-CFourier::CFourier() {
+Cdft::Cdft() {
 }
 
-CFourier::CFourier(const CFourier& orig) {
+Cdft::Cdft(const Cdft& orig) {
 }
 
-CFourier::~CFourier() {
+Cdft::~Cdft() {
 }
 

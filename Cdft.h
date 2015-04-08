@@ -13,11 +13,11 @@
 
 
 
-class CFourier {
+class Cdft {
     
 public:
-    CFourier();
-    virtual ~CFourier();
+    Cdft();
+    virtual ~Cdft();
     
     void dft_f(int Points, float * In, float * Out);
     void idft_f(int Points, float * In, float * Out);
@@ -25,7 +25,7 @@ public:
     void idft_d(int Points, double * In, double * Out);     
     
 private:
-    CFourier(const CFourier& orig);
+    Cdft(const Cdft& orig);
     
 protected:
     bool IsRadix2(int Length);

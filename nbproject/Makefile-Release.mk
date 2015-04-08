@@ -43,11 +43,11 @@ OBJECTFILES= \
 	${OBJECTDIR}/CCoefd.o \
 	${OBJECTDIR}/CFastBluestein.o \
 	${OBJECTDIR}/CFastFourier.o \
-	${OBJECTDIR}/CFourier.o \
 	${OBJECTDIR}/CSort.o \
 	${OBJECTDIR}/CSort4.o \
 	${OBJECTDIR}/CTrans.o \
 	${OBJECTDIR}/CTrans4.o \
+	${OBJECTDIR}/Cdft.o \
 	${OBJECTDIR}/TestMain.o
 
 
@@ -115,11 +115,6 @@ ${OBJECTDIR}/CFastFourier.o: CFastFourier.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastFourier.o CFastFourier.cpp
 
-${OBJECTDIR}/CFourier.o: CFourier.cpp 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} "$@.d"
-	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFourier.o CFourier.cpp
-
 ${OBJECTDIR}/CSort.o: CSort.cpp 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -139,6 +134,11 @@ ${OBJECTDIR}/CTrans4.o: CTrans4.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CTrans4.o CTrans4.cpp
+
+${OBJECTDIR}/Cdft.o: Cdft.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Cdft.o Cdft.cpp
 
 ${OBJECTDIR}/TestMain.o: TestMain.cpp 
 	${MKDIR} -p ${OBJECTDIR}

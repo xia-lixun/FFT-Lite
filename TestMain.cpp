@@ -633,8 +633,11 @@ void test_ichirpz_d(int len) {
 
 
 
-//FFTL/FFTW Forward Float :-2.363980519633000e-02 @130942
-//FFTL/FFTW Forward Double:-6.304069676320861e-10 @118993
+//FFTL/FFTW Forward Float  : 7.193372314484327e-07 @ 64365
+//FFTL/FFTW Backward Float :-6.028643774593350e-06 @ 47504
+//FFTL/FFTW Forward Double :-4.364802737631359e-15 @ 39121
+//FFTL/FFTW Backward Double:-3.580252715454603e-15 @ 2240
+
 
 
 
