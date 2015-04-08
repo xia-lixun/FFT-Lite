@@ -42,10 +42,11 @@
 #include "CTrans.h"
 #include "CTrans4.h"
 
-#include "CFastFourier.h"
 #include "CChirpZ.h"
 #include "CChirpZd.h"
 
+#include "CFastFourier.h"
+#include "CFastBluestein.h"
 
 
 
@@ -341,10 +342,8 @@ void test_chirpz_f(int len) {
         in[i] = (float) ((double)rand() / (double)RAND_MAX - 0.5);        
     }
     
-    unique_ptr<CChirpZ> pChirpZ_f(new CChirpZ(len));
-    memcpy(pChirpZ_f->GetInputFloat(), in, sizeof(float)*len*2);
-    pChirpZ_f->ConvertFloat();
-    memcpy(out, pChirpZ_f->GetOutputFloat(), sizeof(float)*len*2);    
+    unique_ptr<CFastBluestein> pChirpZ(new CFastBluestein);
+    pChirpZ->chirpz_f(len, in, out);
     
 #ifdef SHOW_VALUES   
     std::cout << "FFTL:" << std::endl;
@@ -407,6 +406,80 @@ void test_chirpz_f(int len) {
 
 
 
+void test_ichirpz_f(int len) {
+    
+    float * in = new float[len*2];
+    float * out = new float[len*2];
+    float * ref = new float[len*2];    
+    
+    srand(time(NULL));
+    for(int i = 0; i < len*2; i++) {
+        in[i] = (float) ((double)rand() / (double)RAND_MAX - 0.5);        
+    }
+    
+    unique_ptr<CFastBluestein> pChirpZ(new CFastBluestein);
+    pChirpZ->ichirpz_f(len, in, out);
+    
+#ifdef SHOW_VALUES   
+    std::cout << "FFTL:" << std::endl;
+    cout.precision(std::numeric_limits<float>::digits10);        
+    for(int k = 0; k < len; k++) {
+        std::cout << scientific << out[re(k)] << "    "<< out[im(k)] << std::endl;
+    }
+    std::cout << "FFTW:" << std::endl;    
+#endif 
+    
+    
+    
+    
+    // reference output
+#ifdef TEST_USE_FFTW        
+    fftwf_complex *inFFTW, *outFFTW;
+    fftwf_plan pFFTW;
+    
+    inFFTW = (fftwf_complex *) fftwf_malloc(sizeof(fftwf_complex) * len);
+    outFFTW = (fftwf_complex *) fftwf_malloc(sizeof(fftwf_complex) * len);
+    pFFTW = fftwf_plan_dft_1d(len, inFFTW, outFFTW, FFTW_BACKWARD, FFTW_MEASURE);    
+    memcpy(inFFTW, in, sizeof(float)*len*Cx2Re);         
+    fftwf_execute(pFFTW);    
+    memcpy(ref, outFFTW, sizeof(float)*len*Cx2Re);
+#ifdef SHOW_VALUES
+    cout.precision(std::numeric_limits<float>::digits10);    
+    for(int k = 0; k < len; k++) {
+        std::cout << scientific << ref[re(k)] << "    "<< ref[im(k)] << std::endl;
+    }    
+#endif
+    //statistics
+    
+    double error  = 0.0;
+    double error_ = 0.0;
+    int idx = 0;
+    for(int i = 0; i < len*2; i++) {
+        if(fabs(out[i] - ref[i]) > error) {
+            error = fabs(out[i] - ref[i]);
+            error_ = ref[i];
+            idx = i;
+        }
+    }
+    cout.precision(std::numeric_limits<double>::digits10);
+    cout << scientific << "FFTL/FFTW Backward Float:" << error/error_ << "@" << idx << endl;    
+    
+    
+    // clear the site
+    
+    fftwf_destroy_plan(pFFTW);
+    fftwf_free(inFFTW);
+    fftwf_free(outFFTW);
+    
+#endif   
+ 
+    delete[] in;
+    delete[] out;
+    delete[] ref;    
+}
+
+
+
 
 void test_chirpz_d(int len) {
     
@@ -419,10 +492,9 @@ void test_chirpz_d(int len) {
         in[i] = (double)rand() / (double)RAND_MAX - 0.5;        
     }
     
-    unique_ptr<CChirpZd> pChirpZ_d(new CChirpZd(len));
-    memcpy(pChirpZ_d->GetInputDouble(), in, sizeof(double)*len*2);
-    pChirpZ_d->ConvertDouble();
-    memcpy(out, pChirpZ_d->GetOutputDouble(), sizeof(double)*len*2);    
+    unique_ptr<CFastBluestein> pChirpZ(new CFastBluestein);
+    pChirpZ->chirpz_d(len, in, out);
+    
 
 #ifdef SHOW_VALUES   
     std::cout << "FFTL:" << std::endl;
@@ -482,6 +554,85 @@ void test_chirpz_d(int len) {
     delete[] ref;    
 }
 
+
+
+
+
+void test_ichirpz_d(int len) {
+    
+    double * in = new double[len*2];
+    double * out = new double[len*2];
+    double * ref = new double[len*2];    
+    
+    srand(time(NULL));
+    for(int i = 0; i < len*2; i++) {
+        in[i] = (double)rand() / (double)RAND_MAX - 0.5;        
+    }
+    
+    unique_ptr<CFastBluestein> pChirpZ(new CFastBluestein);
+    pChirpZ->ichirpz_d(len, in, out);
+    
+
+#ifdef SHOW_VALUES   
+    std::cout << "FFTL:" << std::endl;
+    cout.precision(std::numeric_limits<double>::digits10);        
+    for(int k = 0; k < len; k++) {
+        std::cout << scientific << out[re(k)] << "    "<< out[im(k)] << std::endl;
+    }
+    std::cout << "FFTW:" << std::endl;    
+#endif     
+    
+    
+    
+    
+    // reference output
+#ifdef TEST_USE_FFTW        
+    fftw_complex *inFFTW, *outFFTW;
+    fftw_plan pFFTW;
+    
+    inFFTW = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * len);
+    outFFTW = (fftw_complex *) fftw_malloc(sizeof(fftw_complex) * len);
+    pFFTW = fftw_plan_dft_1d(len, inFFTW, outFFTW, FFTW_BACKWARD, FFTW_MEASURE);    
+    memcpy(inFFTW, in, sizeof(double)*len*Cx2Re);         
+    fftw_execute(pFFTW);    
+    memcpy(ref, outFFTW, sizeof(double)*len*Cx2Re);
+    
+#ifdef SHOW_VALUES
+    cout.precision(std::numeric_limits<double>::digits10);    
+    for(int k = 0; k < len; k++) {
+        std::cout << scientific << ref[re(k)] << "    "<< ref[im(k)] << std::endl;
+    }    
+#endif    
+    //statistics
+    
+    double error  = 0.0;
+    double error_ = 0.0;
+    int idx = 0;
+    for(int i = 0; i < len*2; i++) {
+        if(fabs(out[i] - ref[i]) > error) {
+            error = fabs(out[i] - ref[i]);
+            error_ = ref[i];
+            idx = i;
+        }
+    }
+    cout.precision(std::numeric_limits<double>::digits10);
+    cout << scientific << "FFTL/FFTW Backward Double:" << error/error_ << "@" << idx << endl;    
+    
+    
+    // clear the site
+    
+    fftw_destroy_plan(pFFTW);
+    fftw_free(inFFTW);
+    fftw_free(outFFTW);
+#endif    
+    
+    delete[] in;
+    delete[] out;
+    delete[] ref;    
+}
+
+
+
 //FFTL/FFTW Forward Float :-2.363980519633000e-02 @130942
 //FFTL/FFTW Forward Double:-6.304069676320861e-10 @118993
 
@@ -505,7 +656,9 @@ int main(int argc, char** argv) {
     test_ifft_d(65536);    
     
     test_chirpz_f(65539);
+    test_ichirpz_f(65539);    
     test_chirpz_d(65539);
+    test_ichirpz_d(65539);    
     
     return 0;
     

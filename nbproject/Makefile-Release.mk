@@ -41,6 +41,7 @@ OBJECTFILES= \
 	${OBJECTDIR}/CCoef4.o \
 	${OBJECTDIR}/CCoef4d.o \
 	${OBJECTDIR}/CCoefd.o \
+	${OBJECTDIR}/CFastBluestein.o \
 	${OBJECTDIR}/CFastFourier.o \
 	${OBJECTDIR}/CFourier.o \
 	${OBJECTDIR}/CSort.o \
@@ -103,6 +104,11 @@ ${OBJECTDIR}/CCoefd.o: CCoefd.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CCoefd.o CCoefd.cpp
+
+${OBJECTDIR}/CFastBluestein.o: CFastBluestein.cpp 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/CFastBluestein.o CFastBluestein.cpp
 
 ${OBJECTDIR}/CFastFourier.o: CFastFourier.cpp 
 	${MKDIR} -p ${OBJECTDIR}

@@ -16,7 +16,7 @@ public:
     
     float * GetInputFloat(void);
     float * GetOutputFloat(void);    
-    void ConvertFloat(void);        
+    void ConvertFloat(double MathPiWithSign);  // M_PI = forward, -M_PI = backward        
     
 private:
     CChirpZ(const CChirpZ& orig);

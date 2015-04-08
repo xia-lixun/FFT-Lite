@@ -111,7 +111,7 @@ double * CChirpZd::GetOutputDouble() {
 // modulate X[n] and then zero padding to M, which is radix 2 and larger than or equal to 2N-1
 // Y[n] = X[n] * C[n], then Y[n] is written back to X[n].  
 
-void CChirpZd::ConvertDouble(void) {
+void CChirpZd::ConvertDouble(double MathPiWithSign) {
     
     // assume input data have been stored in X from 0 to mPoints-1.
     // pad the rest with zeros
@@ -127,7 +127,7 @@ void CChirpZd::ConvertDouble(void) {
     for(int i = 0; i < mPoints; i++) {
         
         n2 = n % mPoints2;
-        Index = (double)n2 / (double)mPoints * M_PI;
+        Index = (double)n2 / (double)mPoints * MathPiWithSign;
         n += (2*i+1);
         
         //std::cout << ":" << n << std::endl;        

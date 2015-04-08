@@ -87,13 +87,15 @@ CChirpZ::CChirpZ(int Points) {
 // modulate X[n] and then zero padding to M, which is radix 2 and larger than or equal to 2N-1
 // Y[n] = X[n] * C[n], then Y[n] is written back to X[n].  
 
-void CChirpZ::ConvertFloat(void) {
+void CChirpZ::ConvertFloat(double MathPiWithSign) {
     
     // assume input data have been stored in X from 0 to mPoints-1.
     // pad the rest with zeros
     memset(X + (mPoints * Cx2Re), 0, sizeof(float) * Cx2Re * (mPointsChirpZ - mPoints));
     
     // generate C[n]
+    // use range reduction due to cexp realizations
+    // cexp is realized with VECTORMATH=0, so sin()/cos()/exp() are used.
     long long int n  = 0;
     long long int n2 = 0;
     long long int mPoints2 = 2 * mPoints;
@@ -104,7 +106,7 @@ void CChirpZ::ConvertFloat(void) {
         //n2 = n2 * n2;
         
         n2 = n % mPoints2;
-        Index = (double)n2 / (double)mPoints * M_PI;
+        Index = (double)n2 / (double)mPoints * MathPiWithSign;
         n += (2*i+1);
         C[re(i)] = 0.0f;
         C[im(i)] = (float)Index;

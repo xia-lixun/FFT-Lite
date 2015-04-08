@@ -16,7 +16,7 @@ public:
     
     double * GetInputDouble(void);
     double * GetOutputDouble(void);    
-    void ConvertDouble(void);        
+    void ConvertDouble(double MathPiWithSign);  // M_PI = forward, -M_PI = backward         
     
     
 private:

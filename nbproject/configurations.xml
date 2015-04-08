@@ -10,6 +10,7 @@
       <itemPath>CCoef4.h</itemPath>
       <itemPath>CCoef4d.h</itemPath>
       <itemPath>CCoefd.h</itemPath>
+      <itemPath>CFastBluestein.h</itemPath>
       <itemPath>CFastFourier.h</itemPath>
       <itemPath>CFourier.h</itemPath>
       <itemPath>CSort.h</itemPath>
@@ -33,6 +34,7 @@
       <itemPath>CCoef4.cpp</itemPath>
       <itemPath>CCoef4d.cpp</itemPath>
       <itemPath>CCoefd.cpp</itemPath>
+      <itemPath>CFastBluestein.cpp</itemPath>
       <itemPath>CFastFourier.cpp</itemPath>
       <itemPath>CFourier.cpp</itemPath>
       <itemPath>CSort.cpp</itemPath>
@@ -104,6 +106,10 @@
       <item path="CCoefd.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CCoefd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFastBluestein.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastBluestein.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CFastFourier.cpp" ex="false" tool="1" flavor2="0">
       </item>
@@ -181,6 +187,10 @@
       <item path="CCoefd.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="CCoefd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="CFastBluestein.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="CFastBluestein.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="CFastFourier.cpp" ex="false" tool="1" flavor2="0">
       </item>
