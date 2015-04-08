@@ -94,13 +94,18 @@ void CChirpZ::ConvertFloat(void) {
     memset(X + (mPoints * Cx2Re), 0, sizeof(float) * Cx2Re * (mPointsChirpZ - mPoints));
     
     // generate C[n]
+    long long int n  = 0;
     long long int n2 = 0;
+    long long int mPoints2 = 2 * mPoints;
     double Index = 0.0;
+    
     for(int i = 0; i < mPoints; i++) {
-        n2 = (long long int)i;
-        n2 = n2 * n2;
-        Index = M_PI / (double)mPoints * (double)n2;
+        //n2 = (long long int)i;
+        //n2 = n2 * n2;
         
+        n2 = n % mPoints2;
+        Index = (double)n2 / (double)mPoints * M_PI;
+        n += (2*i+1);
         C[re(i)] = 0.0f;
         C[im(i)] = (float)Index;
     }

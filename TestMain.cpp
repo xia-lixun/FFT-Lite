@@ -53,7 +53,7 @@
 
 #define N_TEST_RUN    (1)
 //#define SHOW_VALUES
-//#define TEST_USE_FFTW (1)
+#define TEST_USE_FFTW (1)
 
 
 

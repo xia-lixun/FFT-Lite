@@ -119,13 +119,18 @@ void CChirpZd::ConvertDouble(void) {
 
     
     // generate C[n]
+    long long int n  = 0;
     long long int n2 = 0;
+    long long int mPoints2 = 2 * mPoints;
     double Index = 0.0;
+    
     for(int i = 0; i < mPoints; i++) {
-        n2 = (long long int)i;
-        n2 = n2 * n2;
-        Index = M_PI / (double)mPoints * (double)n2;
-        //std::cout << ":" << n2 << std::endl;        
+        
+        n2 = n % mPoints2;
+        Index = (double)n2 / (double)mPoints * M_PI;
+        n += (2*i+1);
+        
+        //std::cout << ":" << n << std::endl;        
         C[re(i)] = 0.0;
         C[im(i)] = Index;
     }
