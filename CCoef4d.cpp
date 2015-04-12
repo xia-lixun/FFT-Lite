@@ -47,6 +47,7 @@
 #include "vectorclass.h"
 #include "complexvec.h"
 
+#include "CCoef4.h"
 #include "CCoef4d.h"
 #include "Config.h"
 
@@ -55,13 +56,17 @@
 
 
 
-CCoef4d::CCoef4d(int Length) {
+CCoef4d::CCoef4d(){
+}
+
+
+
+
+CCoef4d::CCoef4d(int Length) : CCoef4() {
     
     mN = Length;
 
     // allocate cache-aligned memory for factor coefficient lookup table
-    Wn = NULL;
-
     CoWnHeap1 = NULL;
     CoWnHeap2 = NULL;
     CoWnHeap3 = NULL;    
@@ -69,8 +74,6 @@ CCoef4d::CCoef4d(int Length) {
     CoWnHeap1I = NULL;
     CoWnHeap2I = NULL;
     CoWnHeap3I = NULL;    
-    
-    void * PlaceWn = NULL;
 
     void * PlaceCoWnHeap1 = NULL;
     void * PlaceCoWnHeap2 = NULL;
@@ -88,8 +91,6 @@ CCoef4d::CCoef4d(int Length) {
     }
     
     try{
-        int RetWn  = posix_memalign(&PlaceWn,        CacheAlign, sizeof(double) * mQuadPts * Cx2Re);
-        
         int RetCo1 = posix_memalign(&PlaceCoWnHeap1, CacheAlign, sizeof(double) * mHeapPts * Cx2Re);
         int RetCo2 = posix_memalign(&PlaceCoWnHeap2, CacheAlign, sizeof(double) * mHeapPts * Cx2Re);
         int RetCo3 = posix_memalign(&PlaceCoWnHeap3, CacheAlign, sizeof(double) * mHeapPts * Cx2Re);        
@@ -98,16 +99,14 @@ CCoef4d::CCoef4d(int Length) {
         int RetCo2I = posix_memalign(&PlaceCoWnHeap2I,CacheAlign, sizeof(double) * mHeapPts * Cx2Re);
         int RetCo3I = posix_memalign(&PlaceCoWnHeap3I,CacheAlign, sizeof(double) * mHeapPts * Cx2Re);        
         
-        if(RetWn || RetCo1 || RetCo2 || RetCo3 || RetCo1I || RetCo2I || RetCo3I) {
-            throw RetWn + RetCo1 + RetCo2 + RetCo3 + RetCo1I + RetCo2I + RetCo3I;
+        if(RetCo1 || RetCo2 || RetCo3 || RetCo1I || RetCo2I || RetCo3I) {
+            throw RetCo1 + RetCo2 + RetCo3 + RetCo1I + RetCo2I + RetCo3I;
         }
 
         // allocate the memory for twiddle factor and distribute them into
         // heap structure for pipeline-stage calculations. Note that there
         // is no need for pipeline zero stage in the FFT. See the comments
         // at the top of this file.
-
-        Wn          = new(PlaceWn)          double[mQuadPts * Cx2Re] {};
 
         CoWnHeap1   = new(PlaceCoWnHeap1)   double[mHeapPts * Cx2Re] {};
         CoWnHeap2   = new(PlaceCoWnHeap2)   double[mHeapPts * Cx2Re] {};
@@ -118,14 +117,15 @@ CCoef4d::CCoef4d(int Length) {
         CoWnHeap3I  = new(PlaceCoWnHeap3I) double[mHeapPts * Cx2Re] {};                        
     }
     catch(int& RetComb) {
-        free(PlaceWn);
+       
         free(PlaceCoWnHeap1);
         free(PlaceCoWnHeap2);
         free(PlaceCoWnHeap3);        
         free(PlaceCoWnHeap1I);
         free(PlaceCoWnHeap2I);
         free(PlaceCoWnHeap3I);        
-        std::cout << "_memalign failed: " << RetComb << std::endl;      
+        
+        std::cout << "CCoef4d:: _memalign failed: " << RetComb << std::endl;      
     }
             
 }
@@ -136,8 +136,8 @@ CCoef4d::CCoef4d(int Length) {
 
 
 
-void CCoef4d::CoefGen(int Quadrant, double * CoWnHeap, double Math2) {
-    
+#if(0)
+void CCoef4d::CoefGenWn(int Quadrant, double Math2) {
     // calculate the complex exponential function for Wn,
     // doing nothing if allocation fails.
 
@@ -171,8 +171,18 @@ void CCoef4d::CoefGen(int Quadrant, double * CoWnHeap, double Math2) {
     for(int i = 0; i < mQuadPts * Cx2Re; i += 1) {
         Wn[i] = i;
     }
+#endif    
+}
 #endif
-    
+
+
+
+
+
+
+
+void CCoef4d::CoefGenHeap(double * CoWnHeap, const long double * Wn) {
+        
     if(CoWnHeap != NULL && Wn != NULL) {
         int WnStride   = mQuadPts/4;  //use N/4 instead of N/2 because the optimization:
         int WnElements = 4;           //the heap starts from the second conversion stage  
@@ -180,8 +190,8 @@ void CCoef4d::CoefGen(int Quadrant, double * CoWnHeap, double Math2) {
         
         while (WnStride > 0) {
             for(int i = 0; i < WnElements; i++) {
-                CoWnHeap[WnCnt++] = Wn[re(WnStride * i)];
-                CoWnHeap[WnCnt++] = Wn[im(WnStride * i)];            
+                CoWnHeap[WnCnt++] = (double)Wn[re(WnStride * i)];
+                CoWnHeap[WnCnt++] = (double)Wn[im(WnStride * i)];            
             }
             WnElements = WnElements * 4;
             WnStride = WnStride / 4;
@@ -205,18 +215,51 @@ void CCoef4d::CoefGen(int Quadrant, double * CoWnHeap, double Math2) {
 
 void CCoef4d::CoefComp(void) {
   
-    CoefGen(1, CoWnHeap1, -2.0);
-    CoefGen(2, CoWnHeap2, -2.0);
-    CoefGen(3, CoWnHeap3, -2.0);
+    long double * WnQ1Array = NULL;
+    long double * WnQ2Array = NULL;
+    long double * WnQ3Array = NULL;
     
+    WnQ1Array = new long double[mQuadPts * Cx2Re] {};
+    WnQ2Array = new long double[mQuadPts * Cx2Re] {};
+    WnQ3Array = new long double[mQuadPts * Cx2Re] {};
+
+    CoefGenWnQ1(WnQ1Array);
+    CoefGenHeap(CoWnHeap1, WnQ1Array);
+    
+    CoefGenWnQ2(WnQ2Array, WnQ1Array);    
+    CoefGenHeap(CoWnHeap2, WnQ2Array);
+    
+    CoefGenWnQ3(WnQ3Array, WnQ1Array);
+    CoefGenHeap(CoWnHeap3, WnQ3Array);
+
+    delete[] WnQ1Array;    
+    delete[] WnQ2Array;    
+    delete[] WnQ3Array; 
 }
 
 
 void CCoef4d::CoefCompI(void) {
-  
-    CoefGen(1, CoWnHeap1I, 2.0);
-    CoefGen(2, CoWnHeap2I, 2.0);
-    CoefGen(3, CoWnHeap3I, 2.0);
+
+    long double * WnQ1Array = NULL;
+    long double * WnQ2Array = NULL;
+    long double * WnQ3Array = NULL;
+    
+    WnQ1Array = new long double[mQuadPts * Cx2Re] {};
+    WnQ2Array = new long double[mQuadPts * Cx2Re] {};
+    WnQ3Array = new long double[mQuadPts * Cx2Re] {};
+
+    CoefGenWnQ1I(WnQ1Array);
+    CoefGenHeap(CoWnHeap1I, WnQ1Array);
+    
+    CoefGenWnQ2I(WnQ2Array, WnQ1Array);    
+    CoefGenHeap(CoWnHeap2I, WnQ2Array);
+    
+    CoefGenWnQ3I(WnQ3Array, WnQ1Array);
+    CoefGenHeap(CoWnHeap3I, WnQ3Array);
+
+    delete[] WnQ1Array;    
+    delete[] WnQ2Array;    
+    delete[] WnQ3Array; 
 }
 
 
@@ -224,7 +267,6 @@ void CCoef4d::CoefCompI(void) {
 
 
 // getters and getters
-
 
 const double * CCoef4d::GetCoefComp(int Quadrant) const {
     switch(Quadrant) {
@@ -246,11 +288,6 @@ const double * CCoef4d::GetCoefCompI(int Quadrant) const {
 }
 
 
-int CCoef4d::GetPoints(void) const {
-    return mN;
-}
-
-
 
 
 
@@ -264,10 +301,11 @@ CCoef4d::CCoef4d(const CCoef4d& orig) {
 }
 
 CCoef4d::~CCoef4d() {
+    
     free(CoWnHeap3);
     free(CoWnHeap2);
     free(CoWnHeap1);
-    free(Wn);
+
     free(CoWnHeap3I);
     free(CoWnHeap2I);
     free(CoWnHeap1I);    

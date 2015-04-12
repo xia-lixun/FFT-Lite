@@ -111,7 +111,7 @@ double * CChirpZd::GetOutputDouble() {
 // modulate X[n] and then zero padding to M, which is radix 2 and larger than or equal to 2N-1
 // Y[n] = X[n] * C[n], then Y[n] is written back to X[n].  
 
-void CChirpZd::ConvertDouble(double MathPiWithSign) {
+void CChirpZd::ConvertDouble(long double MathPiWithSign) {
     
     // assume input data have been stored in X from 0 to mPoints-1.
     // pad the rest with zeros
@@ -122,17 +122,17 @@ void CChirpZd::ConvertDouble(double MathPiWithSign) {
     long long int n  = 0;
     long long int n2 = 0;
     long long int mPoints2 = 2 * mPoints;
-    double Index = 0.0;
+    long double Index = 0.0L;
     
     for(int i = 0; i < mPoints; i++) {
         
         n2 = n % mPoints2;
-        Index = (double)n2 / (double)mPoints * MathPiWithSign;
+        Index = (long double)n2 / (long double)mPoints * MathPiWithSign;
         n += (2*i+1);
         
         //std::cout << ":" << n << std::endl;        
         C[re(i)] = 0.0;
-        C[im(i)] = Index;
+        C[im(i)] = (double)Index;
     }
 
     Complex4d ax;

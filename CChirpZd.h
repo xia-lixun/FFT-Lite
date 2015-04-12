@@ -11,18 +11,21 @@
 class CChirpZd {
     
 public:
+    
     CChirpZd(int Points);
     virtual ~CChirpZd();
     
     double * GetInputDouble(void);
     double * GetOutputDouble(void);    
-    void ConvertDouble(double MathPiWithSign);  // M_PI = forward, -M_PI = backward         
+    void ConvertDouble(long double MathPiWithSign);  // M_PIl = forward, -M_PIl = backward         
     
     
 private:
+    
     CChirpZd(const CChirpZd& orig);
     
 protected:
+    
     int mPoints;
     int mPointsChirpZ;  // radix 2 and greater than or equal to 2 * mPoints - 1
     

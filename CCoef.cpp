@@ -52,27 +52,33 @@
 
 
 
+CCoef::CCoef() {
+    
+    CoWnHeap = NULL;
+    CoWnHeapI = NULL;    
+}
+
+
+
+        
+
 CCoef::CCoef(int Length) {
     
-    mN = Length;
-    //
     // allocate cache-aligned memory for factor coefficient lookup table
-    //
-    Wn = NULL;
+
     CoWnHeap = NULL;
     CoWnHeapI = NULL;
     
-    void * PlaceWn = NULL;
     void * PlaceCoWnHeap = NULL;
     void * PlaceCoWnHeapI = NULL;
-    
+
+    mN = Length;    
     try{
-        int RetWn        = posix_memalign(&PlaceWn,        CacheAlign, sizeof(double) *  mN          );
         int RetCoWnHeap  = posix_memalign(&PlaceCoWnHeap,  CacheAlign, sizeof(float) * (mN-2) * Cx2Re);
         int RetCoWnHeapI = posix_memalign(&PlaceCoWnHeapI, CacheAlign, sizeof(float) * (mN-2) * Cx2Re);
         
-        if(RetWn || RetCoWnHeap || RetCoWnHeapI) {
-            throw RetWn + RetCoWnHeap + RetCoWnHeapI;
+        if(RetCoWnHeap || RetCoWnHeapI) {
+            throw RetCoWnHeap + RetCoWnHeapI;
         }
 
         // allocate the memory for twiddle factor and distribute them into
@@ -80,15 +86,15 @@ CCoef::CCoef(int Length) {
         // is no need for pipeline zero stage in the FFT. See the comments
         // at the top of this file.
 
-        Wn        = new(PlaceWn)        double[mN]          {};
         CoWnHeap  = new(PlaceCoWnHeap)  float[(mN-2)*Cx2Re] {};
         CoWnHeapI = new(PlaceCoWnHeapI) float[(mN-2)*Cx2Re] {};                
     }
     catch(int& RetComb) {
-        free(PlaceWn);
+        
         free(PlaceCoWnHeap);
-        free(PlaceCoWnHeapI);        
-        std::cout << "_memalign failed: " << RetComb << std::endl;      
+        free(PlaceCoWnHeapI);    
+        
+        std::cout << "CCoef:: _memalign failed: " << RetComb << std::endl;      
     }
     
 }
@@ -96,14 +102,10 @@ CCoef::CCoef(int Length) {
 
 
 
+#if(0)
+void CCoef::CoefGenWn(double Math2) {
 
-void CCoef::CoefGen(float * CoWnHp, double Math2) {
-
-    //
-    // calculate the complex exponential function for Wn,
-    // doing nothing if allocation fails.
-    //
-    if(Wn != NULL) {
+    if(Wn != NULL) {    
         for(int i = 0; i < mN; i+=2) {
             Wn[i]   = 0.0;
             Wn[i+1] = (double)(i/2);
@@ -124,8 +126,97 @@ void CCoef::CoefGen(float * CoWnHp, double Math2) {
             ax.load(Wn+i);
             bx = cexp(ax);
             bx.store(Wn+i);
+        }    
+    }
+}
+#endif
+
+
+
+
+// X: N = 8
+// O: N = 16
+//
+//                                      (pi/2)
+//                                    A
+//                                    |
+//                                    |
+//                                    X  
+//                         O          |          O
+//                                    |         
+//                                    |
+//                 X                  |                    X
+//                                    |                  
+//                                    |              
+//                                    |
+//            O                       |                         O
+//                                    |             
+//                                    |
+//                                    |
+// (pi) ----X-------------------------+---------------------------X----> (0)
+//
+//
+
+void CCoef::CoefGenWnForward(long double * Wn) {
+
+    long double PhaseCosine;
+    long double PhaseSine;
+
+    // calculate the complex exponential function for Wn,
+    // doing nothing if allocation fails.
+    
+    if(Wn != NULL) {        
+        Wn[0] = 1.0L;  //when phase = 0
+        Wn[1] = 0.0L;
+        
+        Wn[mN/2] = 0.0L;   //when phase = pi/2
+        Wn[mN/2+1] = -1.0L;
+        
+        for(int i = 2; i < mN/2; i += 2) {  
+            PhaseCosine = (long double)i / (long double)mN * M_PIl;     
+            PhaseSine = (long double)(mN/2 + i) / (long double)mN * M_PIl;
+            Wn[i] = cos(PhaseCosine);
+            Wn[i+1] = cos(PhaseSine);
+            Wn[mN-i] = -Wn[i];     //Cosine is odd symmetry over 0 to pi
+            Wn[mN-i+1] = Wn[i+1];  //Sine is even symmetry over 0 to pi
+        }
+    }          
+}
+
+void CCoef::CoefGenWnBackward(long double * Wn) {
+
+    long double PhaseCosine;
+    long double PhaseSine;
+    
+    if(Wn != NULL) {    
+        Wn[0] = 1.0L;  //when phase = 0
+        Wn[1] = 0.0L;
+        
+        Wn[mN/2] = 0.0L;   //when phase = pi/2
+        Wn[mN/2+1] = 1.0L;
+        
+        for(int i = 2; i < mN/2; i += 2) {  
+            PhaseCosine = (long double)i / (long double)mN * M_PIl;     
+            PhaseSine = (long double)(i - mN/2) / (long double)mN * M_PIl;
+            Wn[i] = cos(PhaseCosine);
+            Wn[i+1] = cos(PhaseSine);
+            Wn[mN-i] = -Wn[i];     //Cosine is odd symmetry over 0 to pi
+            Wn[mN-i+1] = Wn[i+1];  //Sine is even symmetry over 0 to pi
         }
     }
+}
+
+
+
+
+
+
+
+
+
+void CCoef::CoefGenHeap(float * CoWnHp, const long double * Wn) {
+
+
     //
     // map Wn to the heap, which could be all zeros if allocation fails.
     //
@@ -153,14 +244,28 @@ void CCoef::CoefGen(float * CoWnHp, double Math2) {
 
 
 void CCoef::CoefComp(void) {
-    CoefGen(CoWnHeap, -2.0);
+    
+    long double * WnArray = NULL;
+    WnArray = new long double[mN] {};
+    
+    CoefGenWnForward(WnArray);
+    CoefGenHeap(CoWnHeap, WnArray);
+    
+    delete[] WnArray;
 }
 
 
 
 
 void CCoef::CoefCompI(void) {
-    CoefGen(CoWnHeapI, 2.0);
+    
+    long double * WnArray = NULL;
+    WnArray = new long double[mN] {};
+    
+    CoefGenWnBackward(WnArray);
+    CoefGenHeap(CoWnHeapI, WnArray);
+    
+    delete[] WnArray;    
 }
 
 
@@ -191,8 +296,7 @@ CCoef::CCoef(const CCoef& orig) {
 
 CCoef::~CCoef() {
     free(CoWnHeap);
-    free(Wn);
-    free(CoWnHeapI);
+    free(CoWnHeapI);   
 }
 
 

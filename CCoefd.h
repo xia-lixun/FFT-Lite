@@ -8,27 +8,33 @@
 #ifndef CTWIDDLEFACTORDP_H
 #define	CTWIDDLEFACTORDP_H
 
+#include "CCoef.h"
 
-class CCoefd {
+
+
+class CCoefd : public CCoef {
     
 public:
+    CCoefd();
     CCoefd(int Length);
     virtual ~CCoefd();
+    
     void CoefComp(void);
     void CoefCompI(void);    
+    
     const double * GetCoefComp(void) const;
     const double * GetCoefCompI(void) const;
-    int            GetPoints(void) const;
+
     
 private:
-    CCoefd(const CCoefd& orig);
-    void CoefGen(double * CoWnHp, double Math2);
-    
-protected:
-    double * Wn;
+
     double * CoWnHeap;    
     double * CoWnHeapI;    
-    int      mN;
+    
+    CCoefd(const CCoefd& orig);
+    void CoefGenHeap(double * CoWnHp, const long double * Wn);
+
+
 };
 
 #endif	/* CTWIDDLEFACTORDP_H */

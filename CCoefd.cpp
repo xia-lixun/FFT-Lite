@@ -43,31 +43,38 @@
 #include "vectorclass.h"
 #include "complexvec.h"
 
+#include "CCoef.h"
 #include "CCoefd.h"
 #include "Config.h"
 
 
 
-CCoefd::CCoefd(int Length) {
-    mN = Length;
-    //
+
+CCoefd::CCoefd() {
+    
+    CoWnHeap = NULL;
+    CoWnHeapI = NULL;    
+}
+
+
+
+CCoefd::CCoefd(int Length) : CCoef() {
+    
     // allocate cache-aligned memory for factor coefficient lookup table
-    //
-    Wn = NULL;
+
     CoWnHeap = NULL;
     CoWnHeapI = NULL;
     
-    void * PlaceWn        = NULL;
     void * PlaceCoWnHeap  = NULL;
     void * PlaceCoWnHeapI = NULL;
-    
+
+    mN = Length;    
     try{
-        int RetWn        = posix_memalign(&PlaceWn,        CacheAlign, sizeof(double)*mN);
         int RetCoWnHeap  = posix_memalign(&PlaceCoWnHeap,  CacheAlign, sizeof(double)*(mN-2)*Cx2Re);
         int RetCoWnHeapI = posix_memalign(&PlaceCoWnHeapI, CacheAlign, sizeof(double)*(mN-2)*Cx2Re);
         
-        if(RetWn || RetCoWnHeap || RetCoWnHeapI) {
-            throw RetWn + RetCoWnHeap + RetCoWnHeapI;
+        if(RetCoWnHeap || RetCoWnHeapI) {
+            throw RetCoWnHeap + RetCoWnHeapI;
         }
         //
         // allocate the memory for twiddle factor and distribute them into
@@ -75,15 +82,15 @@ CCoefd::CCoefd(int Length) {
         // is no need for pipeline zero stage in the FFT. See the comments
         // at the top of this file.
         //
-        Wn        = new(PlaceWn)        double[mN]           {};
         CoWnHeap  = new(PlaceCoWnHeap)  double[(mN-2)*Cx2Re] {};        
         CoWnHeapI = new(PlaceCoWnHeapI) double[(mN-2)*Cx2Re] {};                
     }
     catch(int& RetComb) {
-        free(PlaceWn);
+        
         free(PlaceCoWnHeap);
-        free(PlaceCoWnHeapI);        
-        std::cout << "_memalign failed: " << RetComb << std::endl;      
+        free(PlaceCoWnHeapI);   
+        
+        std::cout << "CCoefd:: _memalign failed: " << RetComb << std::endl;      
     }
 }
 
@@ -91,7 +98,10 @@ CCoefd::CCoefd(int Length) {
 
 
 
-void CCoefd::CoefGen(double * CoWnHp, double Math2) {
+
+
+#if(0)
+void CCoefd::CoefGenWn(double Math2) {
     
     //
     // calculate the complex exponential function for Wn,
@@ -119,7 +129,19 @@ void CCoefd::CoefGen(double * CoWnHp, double Math2) {
             bx = cexp(ax);
             bx.store(Wn+i);
         }
-    }
+    }    
+}
+#endif
+
+
+
+
+
+
+
+
+void CCoefd::CoefGenHeap(double * CoWnHp, const long double * Wn) {
+    
     //
     // map Wn to the heap, which could be all zeros if allocation fails.
     //
@@ -147,12 +169,26 @@ void CCoefd::CoefGen(double * CoWnHp, double Math2) {
 
 
 void CCoefd::CoefComp(void) {
-    CoefGen(CoWnHeap, -2.0);
+    
+    long double * WnArray = NULL;
+    WnArray = new long double[mN] {};    
+    
+    CoefGenWnForward(WnArray);
+    CoefGenHeap(CoWnHeap, WnArray);
+    
+    delete[] WnArray;
 }
 
 
 void CCoefd::CoefCompI(void) {
-    CoefGen(CoWnHeapI, 2.0);
+    
+    long double * WnArray = NULL;
+    WnArray = new long double[mN] {};    
+    
+    CoefGenWnBackward(WnArray);
+    CoefGenHeap(CoWnHeapI, WnArray);
+    
+    delete[] WnArray;
 }
 
 
@@ -171,17 +207,15 @@ const double * CCoefd::GetCoefCompI(void) const {
     return (const double *) CoWnHeapI;
 }
 
-int CCoefd::GetPoints(void) const {
-    return mN;
-}
+
 
 
 CCoefd::CCoefd(const CCoefd& orig) {
 }
 
 CCoefd::~CCoefd() {
+    
     free(CoWnHeap);
-    free(Wn);
     free(CoWnHeapI);
 }
 

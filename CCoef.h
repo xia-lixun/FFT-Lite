@@ -8,28 +8,42 @@
 #ifndef CTWIDDLEFACTOR_H
 #define	CTWIDDLEFACTOR_H
 
+
+
+
 class CCoef {
     
 public:
+    
+    CCoef();
     CCoef(int Length);
     virtual ~CCoef();
     
-    void CoefComp(void);
-    void CoefCompI(void);
+    virtual void CoefComp(void);
+    virtual void CoefCompI(void);
     
     const float * GetCoefComp(void) const;
     const float * GetCoefCompI(void) const;
-    int           GetPoints(void) const;
+    
+    int GetPoints(void) const;
+    
     
 private:
+
+    float * CoWnHeap;    
+    float * CoWnHeapI;
+    
     CCoef(const CCoef& orig);
-    void CoefGen(float * CoWnHp, double Math2);
+    void CoefGenHeap(float * CoWnHp, const long double * Wn);
+    
     
 protected:
-    double * Wn;
-    float  * CoWnHeap;    
-    float  * CoWnHeapI;
-    int      mN;
+    
+    int mN;    
+
+    void CoefGenWnForward(long double * Wn);
+    void CoefGenWnBackward(long double * Wn);
+    
 };
 
 #endif	/* CTWIDDLEFACTOR_H */

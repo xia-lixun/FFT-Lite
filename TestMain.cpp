@@ -653,10 +653,10 @@ void test_ichirpz_d(int len) {
 int main(int argc, char** argv) {
 
     
-    test_fft_f(65536);  //pow(2, 25)/2 ~ 256MB memory length of time series
-    test_ifft_f(65536);
-    test_fft_d(65536);
-    test_ifft_d(65536);    
+    test_fft_f(65536/2);  //pow(2, 25)/2 ~ 256MB memory length of time series
+    test_ifft_f(65536/2);
+    test_fft_d(65536/2);
+    test_ifft_d(65536/2);    
     
     test_chirpz_f(65539);
     test_ichirpz_f(65539);    
@@ -713,8 +713,8 @@ int main(int argc, char** argv) {
     pCoef4d->CoefCompI();    
 
     
+    
     // create as many transformations as working threads need
-
     unique_ptr<CTrans>  pFFT  (new CTrans (*pSort, *pCoef));
     unique_ptr<CTrans>  pFFTd (new CTrans (*pSort, *pCoefd));
     unique_ptr<CTrans4> pFFT4 (new CTrans4(*pSort4, *pCoef4));
@@ -722,7 +722,6 @@ int main(int argc, char** argv) {
     
 
   
-
    
     // prepare time scores
     timespec TimeZero, TimeOne;

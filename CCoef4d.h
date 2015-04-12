@@ -8,13 +8,17 @@
 #ifndef CCOEF4D_H
 #define	CCOEF4D_H
 
+#include "CCoef4.h"
 
 
 
 
-class CCoef4d {
+class CCoef4d : public CCoef4 {
+
     
 public:
+    
+    CCoef4d();
     CCoef4d(int Length);
     virtual ~CCoef4d();
     
@@ -23,14 +27,9 @@ public:
 
     const double * GetCoefComp(int Quadrant) const;
     const double * GetCoefCompI(int Quadrant) const;
-    int            GetPoints(void) const;        
+      
     
 private:
-    CCoef4d(const CCoef4d& orig);
-    void CoefGen(int Quadrant, double * CoWnHeap, double Math2);    
-    
-protected:
-    double * Wn;
     
     double * CoWnHeap1;
     double * CoWnHeap2;
@@ -38,11 +37,10 @@ protected:
 
     double * CoWnHeap1I;
     double * CoWnHeap2I;
-    double * CoWnHeap3I;    
+    double * CoWnHeap3I; 
     
-    int     mN;
-    int     mQuadPts;  //number of points per quadrant. mN/4
-    int     mHeapPts;  //number of points for heaps of all quadrants        
+    CCoef4d(const CCoef4d& orig);
+    void CoefGenHeap(double * CoWnHeap, const long double * Wn);      
     
 };
 
