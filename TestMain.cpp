@@ -341,7 +341,7 @@ void test_chirpz_f(int len) {
     for(int i = 0; i < len*2; i++) {
         in[i] = (float) ((double)rand() / (double)RAND_MAX - 0.5);        
     }
-    
+
     unique_ptr<CFastBluestein> pChirpZ(new CFastBluestein);
     pChirpZ->chirpz_f(len, in, out);
     
@@ -354,7 +354,7 @@ void test_chirpz_f(int len) {
     std::cout << "FFTW:" << std::endl;    
 #endif 
     
-    
+
     
     
     // reference output

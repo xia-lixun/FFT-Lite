@@ -55,8 +55,8 @@ OBJECTFILES= \
 CFLAGS=-m64
 
 # CC Compiler Flags
-CCFLAGS=-m64 -msse4.1 -O3 -march=native
-CXXFLAGS=-m64 -msse4.1 -O3 -march=native
+CCFLAGS=-m64 -O3 -march=native -msse2
+CXXFLAGS=-m64 -O3 -march=native -msse2
 
 # Fortran Compiler Flags
 FFLAGS=

@@ -72,7 +72,7 @@
         <ccTool>
           <architecture>2</architecture>
           <standard>8</standard>
-          <commandLine>-msse4.1 -O3 -march=native</commandLine>
+          <commandLine>-O3 -march=native -msse2</commandLine>
           <warningLevel>2</warningLevel>
         </ccTool>
         <asmTool>
